@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+      <link rel="manifest" href="/manifest.json" />
+<meta name="theme-color" content="#151515" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="thirdle-fav.png">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Styling -->
+    <link rel="stylesheet" href="style.css">
+<title>Thirdle Game - Play the Triple Word Puzzle Online</title>
+<meta name="description" content="Play Thirdle Game, the fun word puzzle where you guess three words at once! Challenge your brain, test your vocabulary, and enjoy this unique twist on word games.">
+
+<meta name="keywords" content="Thirdle game, triple word puzzle, word game online, wordle alternative, play Thirdle, word puzzle challenge">
+
+<meta name="robots" content="index, follow">
+<meta name="author" content="Kaloo Dinaz">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:title" content="Thirdle Game - Triple Word Puzzle Online">
+<meta property="og:description" content="Guess three words at once in the Thirdle Game! A challenging and fun twist on classic word games. Play online and test your word skills.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://kaloodinaz.github.io/thirdle/">
+<meta property="og:image" content="https://kaloodinaz.github.io/thirdle-thumbnail.png">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Thirdle Game - Triple Word Puzzle Online">
+<meta name="twitter:description" content="Play Thirdle Game, the triple word puzzle where you solve three words at the same time. Try it now and boost your word skills!">
+<meta name="twitter:image" content="https://kaloodinaz.github.io/thirdle-thumbnail.png">
+
+</head>
+
+<body>
+<script>
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/sw.js')
+.then(registration => {console.log('Service Worker registered successfully:', registration);})
+.catch(error => {console.log('Error in Service Worker registration:', error);});});}
+</script>
+    <!-- Reset Modal -->
+    <div class="reset-modal-background"></div>
+    <div class="reset-modal-container">
+        <div class="reset-modal">
+            <p>Are you sure you want to reset your current statistics?</p>
+            <div class="reset-modal-buttons">
+                <button class="reset-btns close-reset-btn-small" id="closeResetModalBtn">Cancel</button>
+                <button class="reset-btns reset-btn-small" id="resetStatsBtn">Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Modal -->
+    <div class="stats-modal-background"></div>
+    <div class="stats-modal">
+        <div class="stats-modal-close-btn">
+            <i class="fa-solid fa-xmark"></i>
+        </div>
+        <div class="header">
+            <div class="header-letter">S</div>
+            <div class="header-letter">T</div>
+            <div class="header-letter">A</div>
+            <div class="header-letter">T</div>
+            <div class="header-letter">S</div>
+        </div>
+        <i class="fa-solid fa-chart-line"></i>
+        <h3>Your Statistics</h3>
+        <p class="stat-intro">Here are a collection of your Thirdle stats:</p>
+
+        <p class="stat" id="totalPointsText">0</p>
+        <h3>Points</h3>
+
+        <div class="stats-bar-container">
+            <div class="stats-bar-text">
+                <div class="stats stats-left">
+                    <p>Won</p>
+                    <p class="stats-percentage"><span id="winPercentageText">0</span>%</p>
+                </div>
+                <div class="stats stats-right">
+                    <p class="stats-percentage"><span id="losePercentageText">0</span>%</p>
+                    <p>Lost</p>
+                </div>
+            </div>
+            <div class="stats-bar">
+                <div class="stats-bar__correct-colour"></div>
+            </div>
+        </div>
+
+        <p class="stat" id="gamesPlayedText">0</p>
+        <h3>Games Played</h3>
+
+        <p class="stat" id="gamesWonText">0</p>
+        <h3>Games Won</h3>
+
+        <p class="stat" id="gamesLostText">0</p>
+        <h3>Games Lost</h3>
+
+        <p class="stat" id="hintsUsedText">0</p>
+        <h3>Hints Used</h3>
+
+        <div class="reset-btn-container">
+            <div class="reset-btn">Reset Stats</div>
+        </div>
+
+        <footer class="footer">
+            <p>Copyright &copy; Daniel Healy, <span id="currentDate">2022</span>.</p>
+        </footer>
+    </div>
+
+    <!-- Rules Modal -->
+    <div class="rules-modal-background"></div>
+    <div class="rules-modal">
+        <div class="rules-modal-close-btn">
+            <i class="fa-solid fa-xmark"></i>
+        </div>
+        <div class="header">
+            <div class="header-letter">R</div>
+            <div class="header-letter">U</div>
+            <div class="header-letter">L</div>
+            <div class="header-letter">E</div>
+            <div class="header-letter">S</div>
+        </div>
+        
+        <!-- Objectives -->
+        <i class="fa-solid fa-bullseye"></i>
+        <h3>Objective</h3>
+        <p>The objective of Thirdle is to guess the correct 3-letter word in three turns or less.</p>
+        <hr>
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+        
+        <!-- Gameplay -->
+        <h3>Gameplay</h3>
+        <p>To play Thirdle, use your keyboard or the onscreen keyboard to type a 3-letter word. Submit your guess by
+            clicking <span class="button-text button-text-gray">Enter</span>.</p>
+        <p class="break-p">The letters will then change to one of three colours:</p>
+        <p class="break-p"><span class="button-text button-text-blue">Blue</span> indicates that this letter is in
+            the
+            <strong>correct place</strong>.</p>
+        <p class="break-p"><span class="button-text button-text-orange">Orange</span> indicates that the answer
+            includes
+            this letter, but you have entered it in the <strong>wrong place</strong>.</p>
+        <p class="break-p"><span class="button-text button-text-black">Black</span> indicates that the answer does
+            not
+            include
+            this letter.</p>
+        <p class="break-p">You can get a hint at any point in the game by clicking on the <span
+                class="button-text button-text-blue"><i class="fa-solid fa-magnifying-glass"></i> hint</span>
+            button.
+        </p>
+        
+        <hr>
+        
+        <!-- Points -->
+        <i class="fa-solid fa-chart-line"></i>
+        <h3>Points</h3>
+        <p>At the end of each game, you will be awarded points:</p>
+        <p class="break-p">You will be awarded <strong>100</strong> points if you guess correctly on your first
+            turn.
+        </p>
+        <p class="break-p">You will be awarded <strong>75</strong> points if you guess correctly on your second
+            turn.
+        </p>
+        <p class="break-p">You will be awarded <strong>50</strong> points if you guess correctly on your third turn.
+        </p>
+        <p class="break-p">You will be awarded <strong>25</strong> points if you fail to guess the correct word.</p>
+        <p class="break-p">There will be a <strong>-25</strong> point penalty if you use the <span
+                class="button-text button-text-blue"><i class="fa-solid fa-magnifying-glass"></i> hint</span>
+            button.
+        </p>
+        <p class="break-p">You can view your points and other statistics at any point by clicking on the <span
+                class="button-text button-text-orange"><i class="fa-solid fa-chart-line"></i> Stats</span> button.
+        </p>
+        
+        <hr>
+        
+        <footer class="footer">
+            <p>Copyright &copy; Daniel Healy, <span id="currentDate">2025</span>.</p>
+        </footer>
+    </div>
+
+    <!-- Hint Modal -->
+    <div class="hint-background"></div>
+    <div class="hint-container">
+        <div class="hint-modal hint-modal-in">
+            <p class="hint-modal-text hint-text-fade">B</p>
+            <button class="btn hint-modal-btn">Got it!</button>
+        </div>
+    </div>
+    
+    <!-- Modal -->
+    <div class="background"></div>
+    <div class="modal-container">
+        <div class="modal">
+            <div class="modal-content">
+                <div class="modal-icons">
+                    <p class="modal-img modal-img__left">🎉</p>
+                </div>
+                <h3 class="modal-header">Congratulations!</h3>
+                <div class="modal-message">
+                    <p class="msg-primary">You won! The correct word was <span id="winAnswer"
+                            class="emphasis">dog</span>.
+                    </p>
+                    <p class="msg-secondary">You guessed correct on your <strong><span id="turnNumber">second</span>
+                            turn</strong>. You
+                        <span id="usedHintWin">didn't use</span> your hint and received <strong><span
+                                id="gamePointsWin">100</span>
+                            points</strong>.</p>
+                </div>
+                <div class="modal-buttons">
+                    <button id="playAgainBtn" class="btn btn-primary"><i class="fa-solid fa-arrow-rotate-right"></i>
+                        Play Again</button>
+                    <button class="btn btn-secondary stats-btn__stats"><i class="fa-solid fa-chart-line"></i> View
+                        Stats</button>
+                </div>
+            </div>
+
+            <div class="lose-modal-content">
+                <div class="modal-icons">
+                    <p class="modal-img modal-img__left">😩</p>
+                </div>
+                <h3 class="modal-header">Game Over!</h3>
+                <div class="modal-message">
+                    <p class="msg-primary">You lost! The correct word was <span id="loseAnswer"
+                            class="emphasis">dog</span>.
+                    </p>
+                    <p class="msg-secondary">You <span id="usedHintLose">didn't use</span> your hint and received
+                        <strong><span id="gamePointsLose">100</span> points</strong>.</p>
+                </div>
+                <div class="modal-buttons">
+                    <button id="playAgainBtn" class="btn btn-primary"><i class="fa-solid fa-arrow-rotate-right"></i>
+                        Play Again</button>
+                    <button class="btn btn-secondary stats-btn__stats"><i class="fa-solid fa-chart-line"></i> View
+                        Stats</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- GAME -->
+    <div class="header">
+        <div class="header-letter">T</div>
+        <div class="header-letter">H</div>
+        <div class="header-letter">I</div>
+        <div class="header-letter">R</div>
+        <div class="header-letter">D</div>
+        <div class="header-letter">L</div>
+        <div class="header-letter">E</div>
+    </div>
+
+    <div class="stats-small">
+        <div class="hint-letter">A</div>
+        <button class="stats-btn stats-btn__hint"><i class="fa-solid fa-magnifying-glass"></i>
+            Hint</button>
+        <button class="stats-btn stats-btn__stats"><i class="fa-solid fa-chart-line"></i> Stats</button>
+        <button class="stats-btn stats-btn__rules"><i class="fa-solid fa-circle-info"></i> Rules</button>
+    </div>
+
+    <main class="grid">
+        <div class="tile top-1"></div>
+        <div class="tile top-2"></div>
+        <div class="tile top-3"></div>
+        <div class="tile mid-1"></div>
+        <div class="tile mid-2"></div>
+        <div class="tile mid-3"></div>
+        <div class="tile bot-1"></div>
+        <div class="tile bot-2"></div>
+        <div class="tile bot-3"></div>
+    </main>
+
+    <div class="keyboard">
+        <button class="key letter">q</button>
+        <button class="key letter">w</button>
+        <button class="key letter">e</button>
+        <button class="key letter">r</button>
+        <button class="key letter">t</button>
+        <button class="key letter">y</button>
+        <button class="key letter">u</button>
+        <button class="key letter">i</button>
+        <button class="key letter">o</button>
+        <button class="key letter">p</button>
+        <div class="key space"></div>
+        <button class="key letter">a</button>
+        <button class="key letter">s</button>
+        <button class="key letter">d</button>
+        <button class="key letter">f</button>
+        <button class="key letter">g</button>
+        <button class="key letter">h</button>
+        <button class="key letter">j</button>
+        <button class="key letter">k</button>
+        <button class="key letter">l</button>
+        <div class="key space"></div>
+        <button class="key enter">Enter</button>
+        <button class="key letter">z</button>
+        <button class="key letter">x</button>
+        <button class="key letter">c</button>
+        <button class="key letter">v</button>
+        <button class="key letter">b</button>
+        <button class="key letter">n</button>
+        <button class="key letter">m</button>
+        <button class="key delete">Delete</button>
+    </div>
+    <hr>
+    <div class="block block-728"><script type="text/javascript">
+     atOptions = {
+       'key' : 'd1d26e15f7c349fd8e403bb5ea491a31',
+       'format' : 'iframe',
+       'height' : 90,
+       'width' : 728,
+       'params' : {}
+     };
+   </script>
+   <script type="text/javascript" src="//www.highperformanceformat.com/d1d26e15f7c349fd8e403bb5ea491a31/invoke.js"></script></div>
+<script src="script.js" defer></script>
+</body>
+</html>
