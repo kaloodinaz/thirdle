@@ -26,11 +26,6 @@
 
 ---
 
-## 📷 Preview
-![Thirdle Game Preview](https://kaloodinaz.github.io/thirdle/thirdle-thumbnail.png)
-
----
-
 ## 🛠️ Tech Stack
 - HTML5  
 - CSS3  
